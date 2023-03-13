@@ -24,7 +24,7 @@ public class PayCommand implements CommandExecutor {
         Player player = (Player) sender;
         Player target = Bukkit.getPlayer(args[0]);
 
-        if (target == null || !args[1].matches("\\d+(\\.\\d+)?"))
+        if (target == null || !args[1].matches("\\d+(\\.\\d+)?") || player.equals(target))
             return false;
 
         double amount = Double.parseDouble(args[1]);
@@ -33,9 +33,9 @@ public class PayCommand implements CommandExecutor {
             return false; // Shouldn't be possible but better safe than sorry
 
         PersistentDataContainer playerContainer = player.getPersistentDataContainer();
-        PersistentDataContainer targetContainer = target.getPersistentDataContainer();
-
         double playerOriginal = playerContainer.get(KingsButBad.money, PersistentDataType.DOUBLE);
+
+        PersistentDataContainer targetContainer = target.getPersistentDataContainer();
         double targetOriginal = targetContainer.get(KingsButBad.money, PersistentDataType.DOUBLE);
 
         playerContainer.set(KingsButBad.money, PersistentDataType.DOUBLE, playerOriginal - amount);
